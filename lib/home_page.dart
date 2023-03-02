@@ -8,6 +8,47 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int firstnum = 0;
+  int secondnum = 0;
+  String texttodisplay = "";
+  late String result;
+  late String operand;
+  void buttonclicked(String buttonValue) {
+    if (buttonValue == "C") {
+      texttodisplay = "";
+      firstnum = 0;
+      secondnum = 0;
+      result = "";
+    } else if (buttonValue == "+" ||
+        buttonValue == "-" ||
+        buttonValue == "x" ||
+        buttonValue == "/") {
+      firstnum = int.parse(texttodisplay);
+      result = "";
+      operand = buttonValue;
+    } else if (buttonValue == "=") {
+      secondnum = int.parse(texttodisplay);
+      if (operand == "+") {
+        result = (firstnum + secondnum).toString();
+      }
+      if (operand == "-") {
+        result = (firstnum - secondnum).toString();
+      }
+      if (operand == "x") {
+        result = (firstnum * secondnum).toString();
+      }
+      if (operand == "/") {
+        result = (firstnum / secondnum).toString();
+      }
+    } else {
+      result = int.parse(texttodisplay + buttonValue).toString();
+    }
+
+    setState(() {
+      texttodisplay = result;
+    });
+  }
+
   Widget custombutton(String buttonValue) {
     return Expanded(
       child: SizedBox(
@@ -15,7 +56,7 @@ class _HomePageState extends State<HomePage> {
         child: Padding(
           padding: const EdgeInsets.all(2.0),
           child: OutlinedButton(
-            onPressed: () {},
+            onPressed: () => buttonclicked(buttonValue),
             child: Text(
               "$buttonValue",
               style: TextStyle(
@@ -44,7 +85,7 @@ class _HomePageState extends State<HomePage> {
                 alignment: Alignment.bottomRight,
                 padding: EdgeInsets.all(15),
                 child: Text(
-                  "Output",
+                  "$texttodisplay",
                   style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
@@ -78,7 +119,7 @@ class _HomePageState extends State<HomePage> {
             ),
             Row(
               children: [
-                custombutton("c"),
+                custombutton("C"),
                 custombutton("0"),
                 custombutton("="),
                 custombutton("/"),
